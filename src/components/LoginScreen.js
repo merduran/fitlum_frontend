@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, Button } from 'react-native';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements';
-import deviceStorage from './services/deviceStorage.js';
+import deviceStorage from '../../services/deviceStorage.js';
 import PasswordInputText from 'react-native-hide-show-password-input';
 var validator = require('email-validator');
 
-export default class App extends React.Component {
+export default class LoginScreen extends React.Component {
   
   constructor(props){
     super(props);
@@ -28,6 +28,7 @@ export default class App extends React.Component {
 
 
   _signUp(){
+    _this = this;
     is_email_valid = validator.validate(this.state.email);
     this.state.password !== "" ? is_password_valid = true : is_password_valid = false;
     // console.log("is_password_valid = ", is_password_valid)
@@ -55,10 +56,15 @@ export default class App extends React.Component {
             credential_name: 'email_already_exists'
           });
         }
-        else if (response_Json.token) {
-          deviceStorage.saveItem('id_token', response_Json.token)
-          _this.setState({ token: response_Json.token })
+        else {
+          console.log("NAVIGATE");
+          _this.props.navigation.navigate('TOTPVerification');
         }
+        // else if (response_Json.token) {
+        //   console.log("token is = ", response_Json.token)
+        //   deviceStorage.saveItem('id_token', response_Json.token)
+        //   _this.setState({ token: response_Json.token })
+        // }
       });
       
     } else if (!is_email_valid) {
@@ -154,9 +160,9 @@ export default class App extends React.Component {
     var width = Dimensions.get('window').width;
     var toggle_icon;
     if (this.state.hidden){
-      toggle_icon = require('./icons/visible.png')
+      toggle_icon = require('../../icons/visible.png')
     } else {
-      toggle_icon = require('./icons/invisible.png')
+      toggle_icon = require('../../icons/invisible.png')
     }
     return (
       <View style={styles.container}>
