@@ -19,7 +19,7 @@ export default class LoginScreen extends React.Component {
       is_email_valid: true,
       is_password_valid: true,
     };
-    console.log("constructor")
+    // console.log("constructor")
     this.deleteJWT = deviceStorage.deleteJWT.bind(this);
     this.loadJWT = deviceStorage.loadJWT.bind(this);
     this.loadJWT();
@@ -57,8 +57,8 @@ export default class LoginScreen extends React.Component {
           });
         }
         else {
-          console.log("NAVIGATE");
-          _this.props.navigation.navigate('TOTPVerification');
+          // console.log("NAVIGATE");
+          _this.props.navigation.navigate('TOTPVerification', { email: this.state.email });
         }
         // else if (response_Json.token) {
         //   console.log("token is = ", response_Json.token)
@@ -143,7 +143,7 @@ export default class LoginScreen extends React.Component {
   }
 
   _warnInvalidCredentials(credential){
-    console.log("credential = ", credential)
+    // console.log("credential = ", credential)
     if (!credential.is_credential_valid) {
       if (credential.credential_name.valueOf() === 'email_invalid'){
         return <FormValidationMessage>{'Valid email required'}</FormValidationMessage>

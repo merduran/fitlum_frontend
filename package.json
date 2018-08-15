@@ -10,6 +10,7 @@
     "email-validator": "^2.0.4",
     "react": "16.4.1",
     "react-native": "0.56.0",
+    "react-native-confirmation-code-input": "^1.0.4",
     "react-native-elements": "^0.19.1",
     "react-native-hide-show-password-input": "^1.0.7",
     "react-navigation": "^2.11.2"
