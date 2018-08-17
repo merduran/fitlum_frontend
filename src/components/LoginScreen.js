@@ -57,7 +57,7 @@ export default class LoginScreen extends React.Component {
           });
         }
         else {
-          // console.log("NAVIGATE");
+          console.log("NAVIGATE");
           _this.props.navigation.navigate('TOTPVerification', { email: this.state.email });
         }
         // else if (response_Json.token) {

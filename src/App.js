@@ -3,7 +3,7 @@ import { createStackNavigator } from 'react-navigation';
 import LoginScreen from './components/LoginScreen';
 import TOTPVerificationScreen from './components/TOTPVerificationScreen';
 
-console.log("ENTERING APP")
+// console.log("ENTERING APP")
 const RootStack = createStackNavigator(
   {
     Login: LoginScreen,
