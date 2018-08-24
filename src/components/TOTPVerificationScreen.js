@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, Dimensions, Button } from 'react-native';
 import CodeInput from 'react-native-confirmation-code-input';
+import deviceStorage from '../../services/deviceStorage.js';
+
 export default class TOTPVerificationScreen extends React.Component {
   
   	constructor(props){
@@ -35,6 +37,20 @@ export default class TOTPVerificationScreen extends React.Component {
 	          email: _this.props.navigation.getParam('email'),
 	          totpCode: code
 	        }),
+	    })
+	    .then((response) => {
+	    	return response.json();
+	    })
+	    .then((response_Json) => {
+	    	if (response_Json.token){
+	    		console.log("token = ", response_Json)
+	    		deviceStorage.saveItem('id_token', response_Json.token)
+          		// _this.setState({ token: response_Json.token })
+          		_this.props.navigation.navigate('Home');
+	    	} else {
+	    		// Incorrect/expired code
+	    	}
+	    	
 	    })
 	}
 }
