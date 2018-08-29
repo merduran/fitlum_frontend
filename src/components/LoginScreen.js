@@ -10,7 +10,6 @@ export default class LoginScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      // token: '',
       email: '',
       password: '',
       hidden: true,
@@ -19,11 +18,6 @@ export default class LoginScreen extends React.Component {
       is_email_valid: true,
       is_password_valid: true,
     };
-    // console.log("constructor")
-    // this.deleteJWT = deviceStorage.deleteJWT.bind(this);
-    // this.loadJWT = deviceStorage.loadJWT.bind(this);
-    // this.loadJWT();
-    // console.log("initial token constructor = ", this.state.token);
   }
 
   _signIn(){
@@ -41,48 +35,23 @@ export default class LoginScreen extends React.Component {
         body: JSON.stringify({
           email: _this.state.email,
           password: _this.state.password,
-        }),
+        })
       })
       .then((response) => {
         return response.json();
       })
       .then((response_Json) => {
         if (response_Json.error) {
-
-        } else {
+          response_Json.error.valueOf() === 'Incorrect email' ? this.setState({ is_email_valid: false, invalid_email_msg: response_Json.error }) : this.setState({ is_password_valid: false, invalid_password_msg: response_Json.error })
+        } else {          
           deviceStorage.saveItem('id_token', response_Json.token);
-          _this.setState({ token: response_Json.token })
-
-          // console.log("response_Json.token = ", response_Json.token)
-          // _this.setState({ token: response_Json.token })
+          this.props.navigation.navigate('Home', { email: _this.state.email, token: response_Json.token });
         }
-        
-      })
-    } else if (!is_email_valid) {
-      this.setState({ 
-        credential_name: 'email_invalid'
       });
+    } else {
+      if (!is_email_valid) { this.setState({ invalid_email_msg: 'Valid email required' }); }
+      if (!is_password_valid) { this.setState({ invalid_password_msg: 'Valid password is required' }); }
     }
-      // fetch('http://localhost:8000/api/get_users', {
-      //   method: 'GET',
-      // })
-      // .then((users) => console.log("users = ", users.json()))
-      // .then((response_Json) => {
-      //   if (response_Json.error) {
-      //     this.setState({ 
-      //       is_email_valid: false,
-      //       credential_name: 'email_already_exists'
-      //     });
-      //   }
-      //   else if (response_Json.token) console.log("token = ", response_Json.token)
-      // });
-      
-    // } else if (!is_email_valid) {
-    //   this.setState({ 
-    //     credential_name: 'email_invalid'
-    //   });
-    // }
-
   }
 
   // _signOut(){
@@ -104,21 +73,13 @@ export default class LoginScreen extends React.Component {
   // }
 
   _warnInvalidCredentials(credential){
-    // console.log("credential = ", credential)
     if (!credential.is_credential_valid) {
-      if (credential.credential_name.valueOf() === 'email_invalid'){
-        return <FormValidationMessage>{'Valid email required'}</FormValidationMessage>
-      } else if (credential.credential_name.valueOf() === 'email_already_exists') {
-        return <FormValidationMessage>{'Email taken'}</FormValidationMessage>
-      } else {
-        return <FormValidationMessage>{'Password is required'}</FormValidationMessage>
-      }
+        return <FormValidationMessage>{credential.credential_name}</FormValidationMessage>;
     }
   }
 
-  render() {
-    console.log("render")
-    var width = Dimensions.get('window').width;
+  render(){
+    const width = Dimensions.get('window').width;
     var toggle_icon;
     if (this.state.hidden){
       toggle_icon = require('../../icons/visible.png')
@@ -137,7 +98,7 @@ export default class LoginScreen extends React.Component {
         {this._warnInvalidCredentials(
           {
             is_credential_valid: this.state.is_email_valid, 
-            credential_name: this.state.credential_name
+            credential_name: this.state.invalid_email_msg
           }
         )}
         <FormLabel labelStyle={{color: 'black', fontSize: 20}}>Password</FormLabel>
@@ -156,7 +117,7 @@ export default class LoginScreen extends React.Component {
         {this._warnInvalidCredentials(
           {
             is_credential_valid: this.state.is_password_valid, 
-            credential_name: 'password'
+            credential_name: this.state.invalid_password_msg
           }
         )}        
         <TouchableOpacity onPress={this._signIn.bind(this)} style={{backgroundColor: 'black', margin: 20, padding: 20, borderRadius: 2}}>

@@ -13,7 +13,6 @@ const RootStack = createStackNavigator(
     TOTPVerification: TOTPVerificationScreen,
     Home: HomeScreen,
 
-
   },
   {
     initialRouteName: 'Signup',

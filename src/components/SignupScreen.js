@@ -10,7 +10,6 @@ export default class SignupScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      // token: '',
       email: '',
       password: '',
       hidden: true,
@@ -81,8 +80,7 @@ export default class SignupScreen extends React.Component {
   }
 
   render() {
-    console.log("render")
-    var width = Dimensions.get('window').width;
+    const width = Dimensions.get('window').width;
     var toggle_icon;
     if (this.state.hidden){
       toggle_icon = require('../../icons/visible.png')

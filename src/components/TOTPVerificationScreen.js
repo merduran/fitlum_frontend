@@ -10,16 +10,12 @@ export default class TOTPVerificationScreen extends React.Component {
 	    super(props);
 	    this.state = {
 	    	totp_error: false
-	    	// email: t
 	    };
-	    // console.log("this.state = ", this.props.navigation.getParam('email'))
 	}
 
-	// <View style={{ backgroundColor: 'purple', height: height, flex: 1, flexDirection: 'column', justifyContent: 'center' }}>
   	render(){
-  		// console.log("this.state = ", this.state)
-  		var height = Dimensions.get('window').height;
-  		var width = Dimensions.get('window').width;
+  		const height = Dimensions.get('window').height;
+  		const width = Dimensions.get('window').width;
   		console.log("this.state.email = ", this.props.navigation.getParam('email'));
 	    return (
 	    	<View style={{flex: 1}}>
@@ -37,7 +33,6 @@ export default class TOTPVerificationScreen extends React.Component {
 			      autoFocus={false}
 			      codeInputStyle={{ color: 'black', borderColor: 'black', borderWidth: 1.5 }}
 			      containerStyle={{ marginTop: 40, flex: 0, flexDirection: 'row', justifyContent: 'center' }}
-			      // containerStyle={{styles.codeInputContainer}}
 			      onFulfill={(code) => this._onFulfill(code)}
 			    />
 			    {this._warnInvalidTOTPToken()}
@@ -50,7 +45,6 @@ export default class TOTPVerificationScreen extends React.Component {
 
 	_resendCode(){
 		_this = this;
-		console.log("RESENDING CODE");
 		fetch('http://localhost:8000/api/totp_resend_totp', {
 	        method: 'POST',
 	        headers: {
@@ -60,7 +54,7 @@ export default class TOTPVerificationScreen extends React.Component {
 	        body: JSON.stringify({
 	          email: _this.props.navigation.getParam('email'),
 	        })
-	    })
+	    });
 	}
 
 	_onFulfill(code){
@@ -81,10 +75,8 @@ export default class TOTPVerificationScreen extends React.Component {
 	    })
 	    .then((response_Json) => {
 	    	if (response_Json.token){
-	    		console.log("token = ", response_Json)
 	    		deviceStorage.saveItem('id_token', response_Json.token)
-          		// _this.setState({ token: response_Json.token })
-          		_this.props.navigation.navigate('Home');
+          		_this.props.navigation.navigate('Home', { email: _this.state.email, token: response_Json.token });
 	    		this.setState({ totp_error: false })
 	    	} else {
 	    		// Incorrect/expired code
