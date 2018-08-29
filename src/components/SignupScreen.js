@@ -5,7 +5,7 @@ import deviceStorage from '../../services/deviceStorage.js';
 import PasswordInputText from 'react-native-hide-show-password-input';
 var validator = require('email-validator');
 
-export default class LoginScreen extends React.Component {
+export default class SignupScreen extends React.Component {
   
   constructor(props){
     super(props);
@@ -19,23 +19,20 @@ export default class LoginScreen extends React.Component {
       is_email_valid: true,
       is_password_valid: true,
     };
-    // console.log("constructor")
-    // this.deleteJWT = deviceStorage.deleteJWT.bind(this);
-    // this.loadJWT = deviceStorage.loadJWT.bind(this);
-    // this.loadJWT();
-    // console.log("initial token constructor = ", this.state.token);
   }
 
-  _signIn(){
+
+  _signUp(){
+    _this = this;
     is_email_valid = validator.validate(this.state.email);
     this.state.password !== "" ? is_password_valid = true : is_password_valid = false;
     this.setState({ is_email_valid: is_email_valid, is_password_valid: is_password_valid });
     if (is_password_valid && is_email_valid) {
       _this = this;
-      fetch('http://localhost:8000/api/sign_in', {
+      fetch('http://localhost:8000/api/sign_up', {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
+        Accept: 'application/json',
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -48,60 +45,27 @@ export default class LoginScreen extends React.Component {
       })
       .then((response_Json) => {
         if (response_Json.error) {
-
-        } else {
-          deviceStorage.saveItem('id_token', response_Json.token);
-          _this.setState({ token: response_Json.token })
-
-          // console.log("response_Json.token = ", response_Json.token)
-          // _this.setState({ token: response_Json.token })
+          this.setState({ 
+            is_email_valid: false,
+            credential_name: 'email_already_exists'
+          });
         }
-        
-      })
+        else {
+          _this.props.navigation.navigate('TOTPVerification', { email: _this.state.email });
+        }
+        // else if (response_Json.token) {
+        //   console.log("token is = ", response_Json.token)
+        //   deviceStorage.saveItem('id_token', response_Json.token)
+        //   _this.setState({ token: response_Json.token })
+        // }
+      });
+      
     } else if (!is_email_valid) {
       this.setState({ 
         credential_name: 'email_invalid'
       });
     }
-      // fetch('http://localhost:8000/api/get_users', {
-      //   method: 'GET',
-      // })
-      // .then((users) => console.log("users = ", users.json()))
-      // .then((response_Json) => {
-      //   if (response_Json.error) {
-      //     this.setState({ 
-      //       is_email_valid: false,
-      //       credential_name: 'email_already_exists'
-      //     });
-      //   }
-      //   else if (response_Json.token) console.log("token = ", response_Json.token)
-      // });
-      
-    // } else if (!is_email_valid) {
-    //   this.setState({ 
-    //     credential_name: 'email_invalid'
-    //   });
-    // }
-
-  }
-
-  // _signOut(){
-  //   this.deleteJWT();
-  //   console.log("token - ", this.state.token);
-  // }
-
-  // _submitListAll(){
-  //   _this = this;
-  //   console.log("_this.state.token submit list all = ", this.state.token)
-  //   console.log("this.state.token = ", this.state.token);
-  //   fetch('http://localhost:8000/api/get_users', {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: _this.state.token,
-  //     },
-  //   })
-  //   .then((users) => console.log("YA = ", users.json()))
-  // }
+  } 
 
   _warnInvalidCredentials(credential){
     // console.log("credential = ", credential)
@@ -159,11 +123,15 @@ export default class LoginScreen extends React.Component {
             credential_name: 'password'
           }
         )}        
-        <TouchableOpacity onPress={this._signIn.bind(this)} style={{backgroundColor: 'black', margin: 20, padding: 20, borderRadius: 2}}>
+        <TouchableOpacity onPress={this._signUp.bind(this)} style={{backgroundColor: 'black', margin: 20, padding: 20, borderRadius: 2}}>
           <Text style={{textAlign: 'center', color: 'white', letterSpacing: 3, fontSize: 20}}>
-            SIGN IN
+            SIGN UP
           </Text>
         </TouchableOpacity>
+        <View style={{ position: 'absolute', bottom: 100 }}>
+          <Text style={{width: width, textAlign: 'center', marginBottom: 10, flex: 1}}>Already signed up?</Text>
+          <Text style={{width: width, textAlign: 'center', color: 'blue', flex: 1}} onPress={() => this.props.navigation.navigate('Login')}>Click here to sign in</Text>
+        </View>
       </View>
     );
   }

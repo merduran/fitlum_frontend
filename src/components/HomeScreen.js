@@ -14,9 +14,38 @@ export default class HomeScreen extends React.Component {
 	    this.loadJWT();
 	}
   	
+	_signOut(){
+	    this.deleteJWT();
+	    console.log("token - ", this.state.token);
+	}
+
+	_submitListAll(){
+	    _this = this;
+	    console.log("_this.state.token submit list all = ", this.state.token)
+	    console.log("this.state.token = ", this.state.token);
+	    fetch('http://localhost:8000/api/get_users', {
+	      method: 'GET',
+	      headers: {
+	        Authorization: _this.state.token,
+	      },
+	    })
+	    .then((users) => console.log("YA = ", users.json()))
+	}
+
   	render(){
 	    return (
-	    	<Text>HomeScreen + {this.state.token}</Text>
+	    	<View>
+		    	<TouchableOpacity onPress={this._submitListAll.bind(this)} style={{backgroundColor: 'green', margin: 20, padding: 20, borderRadius: 2}}>
+		          <Text style={{textAlign: 'center', color: 'white', letterSpacing: 3, fontSize: 20}}>
+		            LIST USERS
+		          </Text>
+		        </TouchableOpacity>
+		        <TouchableOpacity onPress={() => this._signOut()} style={{backgroundColor: 'purple', margin: 20, padding: 20, borderRadius: 2}}>
+		          <Text style={{textAlign: 'center', color: 'white', letterSpacing: 3, fontSize: 20}}>
+		            SIGN OUT
+		          </Text>
+		        </TouchableOpacity>
+		    </View>
 		);
 	}
 

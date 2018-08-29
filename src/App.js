@@ -3,17 +3,20 @@ import { createStackNavigator } from 'react-navigation';
 import LoginScreen from './components/LoginScreen';
 import TOTPVerificationScreen from './components/TOTPVerificationScreen';
 import HomeScreen from './components/HomeScreen';
+import SignupScreen from './components/SignupScreen'
 
 // console.log("ENTERING APP")
 const RootStack = createStackNavigator(
   {
+    Signup: SignupScreen,
     Login: LoginScreen,
     TOTPVerification: TOTPVerificationScreen,
-    Home: HomeScreen
+    Home: HomeScreen,
+
 
   },
   {
-    initialRouteName: 'Login',
+    initialRouteName: 'Signup',
   }
 );
 
