@@ -19,6 +19,11 @@ export default class HomeScreen extends React.Component {
 	    console.log("token - ", this.state.token);
 	}
 
+	static navigationOptions = {
+	    title: 'Home',
+	    headerLeft: null
+	};
+
 	_submitListAll(){
 	    _this = this;
 	    console.log("_this.state.token submit list all = ", this.state.token)

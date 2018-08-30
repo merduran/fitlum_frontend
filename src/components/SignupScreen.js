@@ -20,6 +20,10 @@ export default class SignupScreen extends React.Component {
     };
   }
 
+  static navigationOptions = {
+    title: 'Signing up'
+  };
+
 
   _signUp(){
     _this = this;

@@ -20,6 +20,10 @@ export default class LoginScreen extends React.Component {
     };
   }
 
+  static navigationOptions = {
+    title: 'Logging in'
+  };
+
   _signIn(){
     is_email_valid = validator.validate(this.state.email);
     this.state.password !== "" ? is_password_valid = true : is_password_valid = false;
