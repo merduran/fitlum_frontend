@@ -58,30 +58,6 @@ export default class LoginScreen extends React.Component {
     }
   }
 
-  // _signOut(){
-  //   this.deleteJWT();
-  //   console.log("token - ", this.state.token);
-  // }
-
-  // _submitListAll(){
-  //   _this = this;
-  //   console.log("_this.state.token submit list all = ", this.state.token)
-  //   console.log("this.state.token = ", this.state.token);
-  //   fetch('http://localhost:8000/api/get_users', {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: _this.state.token,
-  //     },
-  //   })
-  //   .then((users) => console.log("YA = ", users.json()))
-  // }
-
-  _warnInvalidCredentials(credential){
-    if (!credential.is_credential_valid) {
-        return <FormValidationMessage>{credential.credential_name}</FormValidationMessage>;
-    }
-  }
-
   render(){
     const width = Dimensions.get('window').width;
     var toggle_icon;
@@ -99,7 +75,7 @@ export default class LoginScreen extends React.Component {
           inputStyle={{color: 'black', paddingRight: 30}} 
           placeholder={'john_doe@brown.edu'}
         />  
-        {this._warnInvalidCredentials(
+        {this.props.navigation.getParam('_warnInvalidCredentials')(
           {
             is_credential_valid: this.state.is_email_valid, 
             credential_name: this.state.invalid_email_msg
@@ -118,7 +94,7 @@ export default class LoginScreen extends React.Component {
             <Image source={toggle_icon} style={{height: 25, width: 25}}/>
           </TouchableOpacity>
         </View>
-        {this._warnInvalidCredentials(
+        {this.props.navigation.getParam('_warnInvalidCredentials')(
           {
             is_credential_valid: this.state.is_password_valid, 
             credential_name: this.state.invalid_password_msg

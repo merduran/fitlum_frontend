@@ -14,28 +14,30 @@ export default class HomeScreen extends React.Component {
 	    this.loadJWT();
 	}
   	
-	_signOut(){
-	    this.deleteJWT();
-	    console.log("token - ", this.state.token);
-	}
+	// _signOut(){
+	//     this.deleteJWT();
+	//     console.log("token - ", this.state.token);
+	// }
 
-	static navigationOptions = {
-	    title: 'Home',
-	    headerLeft: null
-	};
+	// static navigationOptions = {
+	//     title: 'Home',
+	//     headerLeft: null
+	// };
 
-	_submitListAll(){
-	    _this = this;
-	    console.log("_this.state.token submit list all = ", this.state.token)
-	    console.log("this.state.token = ", this.state.token);
-	    fetch('http://localhost:8000/api/get_users', {
-	      method: 'GET',
-	      headers: {
-	        Authorization: _this.state.token,
-	      },
-	    })
-	    .then((users) => console.log("YA = ", users.json()))
-	}
+	// _submitListAll(){
+	//     _this = this;
+	//     console.log("_this.state.token submit list all = ", this.state.token)
+	//     console.log("this.state.token = ", this.state.token);
+	//     fetch('http://localhost:8000/api/get_users', {
+	//       method: 'GET',
+	//       headers: {
+	//         Authorization: _this.state.token,
+	//       },
+	//     })
+	//     .then((response) => {
+	//     	console.log("YA = ", response.json())
+	//     });
+	// }
 
   	render(){
 	    return (

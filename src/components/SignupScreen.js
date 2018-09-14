@@ -56,11 +56,6 @@ export default class SignupScreen extends React.Component {
         else {
           _this.props.navigation.navigate('TOTPVerification', { email: _this.state.email });
         }
-        // else if (response_Json.token) {
-        //   console.log("token is = ", response_Json.token)
-        //   deviceStorage.saveItem('id_token', response_Json.token)
-        //   _this.setState({ token: response_Json.token })
-        // }
       });
       
     } else {
@@ -68,53 +63,6 @@ export default class SignupScreen extends React.Component {
       if (!is_password_valid) { this.setState({ invalid_password_msg: 'Valid password is required' }); }
     }
   } 
-
-  // _signIn(){
-  //   is_email_valid = validator.validate(this.state.email);
-  //   this.state.password !== "" ? is_password_valid = true : is_password_valid = false;
-  //   this.setState({ is_email_valid: is_email_valid, is_password_valid: is_password_valid });
-  //   if (is_password_valid && is_email_valid) {
-  //     _this = this;
-  //     fetch('http://localhost:8000/api/sign_in', {
-  //       method: 'POST',
-  //       headers: {
-  //         Accept: 'application/json',
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify({
-  //         email: _this.state.email,
-  //         password: _this.state.password,
-  //       })
-  //     })
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((response_Json) => {
-  //       if (response_Json.error) {
-  //         response_Json.error.valueOf() === 'Incorrect email' ? this.setState({ is_email_valid: false, invalid_email_msg: response_Json.error }) : this.setState({ is_password_valid: false, invalid_password_msg: response_Json.error })
-  //       } else {          
-  //         deviceStorage.saveItem('id_token', response_Json.token);
-  //         this.props.navigation.navigate('Home', { email: _this.state.email, token: response_Json.token });
-  //       }
-  //     });
-  //   } else {
-  //     if (!is_email_valid) { this.setState({ invalid_email_msg: 'Valid email required' }); }
-  //     if (!is_password_valid) { this.setState({ invalid_password_msg: 'Valid password is required' }); }
-  //   }
-  // }
-
-  // _warnInvalidCredentials(credential){
-  //   // console.log("credential = ", credential)
-  //   if (!credential.is_credential_valid) {
-  //     if (credential.credential_name.valueOf() === 'email_invalid'){
-  //       return <FormValidationMessage>{'Valid email required'}</FormValidationMessage>
-  //     } else if (credential.credential_name.valueOf() === 'email_already_exists') {
-  //       return <FormValidationMessage>{'Email taken'}</FormValidationMessage>
-  //     } else {
-  //       return <FormValidationMessage>{'Password is required'}</FormValidationMessage>
-  //     }
-  //   }
-  // }
 
   _warnInvalidCredentials(credential){
     if (!credential.is_credential_valid) {
@@ -172,7 +120,7 @@ export default class SignupScreen extends React.Component {
         </TouchableOpacity>
         <View style={{ position: 'absolute', bottom: 100 }}>
           <Text style={{width: width, textAlign: 'center', marginBottom: 10, flex: 1}}>Already signed up?</Text>
-          <Text style={{width: width, textAlign: 'center', color: 'blue', flex: 1}} onPress={() => this.props.navigation.navigate('Login')}>Click here to sign in</Text>
+          <Text style={{width: width, textAlign: 'center', color: 'blue', flex: 1}} onPress={() => this.props.navigation.navigate('Login', { _warnInvalidCredentials: this._warnInvalidCredentials })}>Click here to sign in</Text>
         </View>
       </View>
     );
